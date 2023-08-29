@@ -95,7 +95,6 @@ esp_err_t ll_cam_deinit(cam_obj_t *cam)
         esp_intr_free(cam->cam_intr_handle);
         cam->cam_intr_handle = NULL;
     }
-    gpio_uninstall_isr_service();
     return ESP_OK;
 }
 
@@ -217,7 +216,6 @@ esp_err_t ll_cam_set_pin(cam_obj_t *cam, const camera_config_t *config)
     io_conf.pull_up_en = 1;
     io_conf.pull_down_en = 0;
     gpio_config(&io_conf);
-    gpio_install_isr_service(ESP_INTR_FLAG_LOWMED | ESP_INTR_FLAG_IRAM);
     gpio_isr_handler_add(config->pin_vsync, ll_cam_vsync_isr, cam);
     gpio_intr_disable(config->pin_vsync);
 
